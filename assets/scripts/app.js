@@ -26,62 +26,52 @@ function saveUserInputLogs(
 
     logEntries.push(logEntry);
     console.log(logEntry.operator);
-    console.log(logEntries[logEntries]);
+    console.log(logEntries);
 }
 
-function add() {
+function calculateResult(calcualtionType) {
+    if (!getUserNumberInput()) {
+        alert("Value cannot be zero, empty or any other character");
+        return;
+    }
+
     const resultBeforeCalc = currentResult;
-    currentResult = currentResult + getUserNumberInput();
+    var calculationTypeSymbol = "";
+
+    if (calcualtionType == ADD) {
+        currentResult = currentResult + getUserNumberInput();
+        calculationTypeSymbol = "+";
+    } else if (calcualtionType == SUBSTRACT) {
+        currentResult = currentResult - getUserNumberInput();
+        calculationTypeSymbol = "-";
+    } else if (calcualtionType == MULTIPLY) {
+        currentResult = currentResult * getUserNumberInput();
+        calculationTypeSymbol = "*";
+    } else if (calcualtionType == DIVISION) {
+        currentResult = currentResult / getUserNumberInput();
+        calculationTypeSymbol = "/";
+    }
+
+    createAndWriteOutput(
+        calculationTypeSymbol,
+        resultBeforeCalc,
+        getUserNumberInput()
+    );
+
+    saveUserInputLogs(
+        calcualtionType,
+        resultBeforeCalc,
+        getUserNumberInput(),
+        currentResult
+    );
+
     // currentResult = currentResult + +userInput.value;
-    createAndWriteOutput("+", resultBeforeCalc, getUserNumberInput());
-    saveUserInputLogs(
-        "ADD",
-        resultBeforeCalc,
-        getUserNumberInput(),
-        currentResult
-    );
 }
 
-function substract() {
-    const resultBeforeCalc = currentResult;
-    currentResult = currentResult - getUserNumberInput();
-    createAndWriteOutput("-", resultBeforeCalc, getUserNumberInput());
-    saveUserInputLogs(
-        "SUBSTRACT",
-        resultBeforeCalc,
-        getUserNumberInput(),
-        currentResult
-    );
-}
+addBtn.addEventListener("click", calculateResult.bind(this, ADD));
 
-function multiply() {
-    const resultBeforeCalc = currentResult;
-    currentResult = currentResult * getUserNumberInput();
-    createAndWriteOutput("*", resultBeforeCalc, getUserNumberInput());
-    saveUserInputLogs(
-        "MULTIPLY",
-        resultBeforeCalc,
-        getUserNumberInput(),
-        currentResult
-    );
-}
+subtractBtn.addEventListener("click", calculateResult.bind(this, SUBSTRACT));
 
-function division() {
-    const resultBeforeCalc = currentResult;
-    currentResult = currentResult / getUserNumberInput();
-    createAndWriteOutput("/", resultBeforeCalc, getUserNumberInput());
-    saveUserInputLogs(
-        "DIVISION",
-        resultBeforeCalc,
-        getUserNumberInput(),
-        currentResult
-    );
-}
+multiplyBtn.addEventListener("click", calculateResult.bind(this, MULTIPLY));
 
-addBtn.addEventListener("click", add);
-
-subtractBtn.addEventListener("click", substract);
-
-multiplyBtn.addEventListener("click", multiply);
-
-divideBtn.addEventListener("click", division);
+divideBtn.addEventListener("click", calculateResult.bind(this, DIVISION));
